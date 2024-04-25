@@ -41,7 +41,7 @@ function ScannerContainer() {
           </div>
           <DialogFooter>
             <Button
-              onClick={() => {
+              onClick={async () => {
                 let text = inputRef?.current?.value;
                 if (!!text && text.length > 0) {
                   // let bt = BinTools.getInstance();
@@ -56,6 +56,17 @@ function ScannerContainer() {
                         keccak_256(pubKey.slice(1)).slice(-20)
                       );
                     setEthAddress(ethAddress);
+            // let data = { code: "KKYIGX", session: "4efecbbb-7790-5d4f-9c2f-8cce8997a817", key: hexPubkey, walletAddress: ethAddress}
+                    
+            // let resp = await fetch("http://hercher.eu:8080/api/verify", {
+            //   method: "POST",
+            //   body: JSON.stringify(data),
+            //   headers: {
+            //     "Content-Type": "application/json",
+            //   },
+            //       })
+
+
                   } else {
                     alert("Invalid Private Key");
                   }
@@ -136,8 +147,8 @@ function AuthCodeScanner({
       {!(showDeniedDialog || showVerifiedDialog) ? (
         <Scanner
           options={{
-            delayBetweenScanAttempts: 1000,
-            delayBetweenScanSuccess: 5000,
+            // delayBetweenScanAttempts: 1000,
+            delayBetweenScanSuccess: 2000,
           }}
           components={{
             torch: false,
