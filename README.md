@@ -1,30 +1,6 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+![Shark Nice](https://media3.giphy.com/media/QHsDPTyYU2R0Y/giphy.gif?cid=47028fa8xr94v2susupwyzzqea2mkstn3h69sb0hmzcnj8i7&ep=v1_gifs&rid=giphy.gif&ct=g)
+![Keanu Thumb](https://media2.giphy.com/media/uiMIJMFYgRaAz5Pcb7/giphy.gif?cid=47028fa8xr94v2susupwyzzqea2mkstn3h69sb0hmzcnj8i7&ep=v1_gifs&rid=giphy.gif&ct=g)
+![Schitts Creek Perfect](https://media2.giphy.com/media/KEYbcgR8oKQzwpwvLU/giphy-downsized-medium.gif?cid=47028fa8xr94v2susupwyzzqea2mkstn3h69sb0hmzcnj8i7&ep=v1_gifs&rid=giphy-downsized-medium.gif&ct=g)
+![Japanese OK](https://media0.giphy.com/media/26gQt4Oqpz2JshYis/giphy.gif?cid=47028fa8xr94v2susupwyzzqea2mkstn3h69sb0hmzcnj8i7&ep=v1_gifs&rid=giphy.gif&ct=g)
+![Biden Smile](https://media3.giphy.com/media/dAvvMX8BLOvCg/giphy.gif?cid=47028fa8xr94v2susupwyzzqea2mkstn3h69sb0hmzcnj8i7&ep=v1_gifs&rid=giphy.gif&ct=g)
