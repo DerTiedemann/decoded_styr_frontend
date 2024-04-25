@@ -1,48 +1,70 @@
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { ReactNode } from 'react'
-import QRCode from 'react-qr-code'
+import { cn } from "@/lib/utils";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { ReactNode, useEffect, useState } from "react";
+import QRCode from "react-qr-code";
+import useWebSocket from "react-use-websocket";
 
-export const Route = createLazyFileRoute('/hotel')({
-  component: () => Index()
-})
+export const Route = createLazyFileRoute("/hotel")({
+  component: () => Index(),
+});
 
 function Index() {
-  return (
-    <CodeCard code={"LARS"}/>
-  )
+  const { lastMessage } = useWebSocket("ws://hercher.eu:8080/ws");
+
+  const [code, setCode] = useState<string>("");
+  const [data, setData] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (lastMessage) {
+      let data = JSON.parse(lastMessage.data);
+      setData(lastMessage.data);
+      setCode(data.code);
+    }
+  }, [lastMessage]);
+  if (code === "") {
+    return <></>;
+  }
+
+  return <CodeCard code={code} data={data} />;
 }
 
 interface CodeCardProps {
-  code: String
+  code: String;
+  data?: String;
 }
-function CodeCard({code}: CodeCardProps) {
+function CodeCard({ code, data }: CodeCardProps) {
+  if (!data) {
+    data = code;
+  }
   return (
     <Card>
-      <div className='flex flex-col items-center m-10 text-center'>
-
-      <h3>Tell code to traveller</h3>
-      <h1 className='font-black mx-20 text-5xl text-center'>{code.toUpperCase()}</h1>
-      <h3 className='mt-10'>or let them scan the code</h3>
-      <div className='mt-5'>
-       <QRCode className='' level='H' value={code.toString()}></QRCode>
-      </div>
+      <div className="flex flex-col items-center m-10 text-center">
+        <h3>Tell code to traveller</h3>
+        <h1 className="font-black mx-20 text-5xl text-center">
+          {code.toUpperCase()}
+        </h1>
+        <h3 className="mt-10">or let them scan the code</h3>
+        <div className="mt-5">
+          <QRCode className="" level="H" value={data.toString()}></QRCode>
+        </div>
       </div>
     </Card>
-  )
+  );
 }
 
 interface CardProps {
-  children: ReactNode
-  className?: string
+  children: ReactNode;
+  className?: string;
 }
 
-
-function Card({children, className} : CardProps) {
+function Card({ children, className }: CardProps) {
   return (
-    <div className={cn(className, 'max-w-sm rounded overflow-hidden bg-zinc-700 flex flex-col items-center')}>
+    <div
+      className={cn(
+        className,
+        "max-w-sm rounded overflow-hidden bg-zinc-700 flex flex-col items-center"
+      )}
+    >
       {children}
     </div>
-  )
+  );
 }

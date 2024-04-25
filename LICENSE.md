@@ -6,7 +6,8 @@ FSL-1.1-Apache-2.0
 
 ## Notice
 
-Copyright 2024 Jan Max Tiedemann, Lars Hercher
+Copyright 2024 Jan Max Tiedemann, Lars Hercher, Claudia Zanetti, Gian Franco Mercado
+
 ## Terms and Conditions
 
 ### Licensor ("We")
