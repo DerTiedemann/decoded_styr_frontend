@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Ban, Check, Cross } from "lucide-react";
+import { Ban, Check } from "lucide-react";
 import { keccak_256 } from "@noble/hashes/sha3";
 
 import * as secp from "@noble/secp256k1";
@@ -36,7 +36,12 @@ function ScannerContainer() {
               <Label htmlFor="privKey" className="text-right">
                 Private Key
               </Label>
-              <Input ref={inputRef} id="name" className="col-span-3" />
+              <Input
+                ref={inputRef}
+                type="password"
+                id="name"
+                className="col-span-3"
+              />
             </div>
           </div>
           <DialogFooter>
@@ -85,11 +90,7 @@ interface AuthCodeScannerProps {
   ethAddress: String;
 }
 
-function AuthCodeScanner({
-  privkey,
-  pubkey,
-  ethAddress,
-}: AuthCodeScannerProps) {
+function AuthCodeScanner({ pubkey, ethAddress }: AuthCodeScannerProps) {
   const [_data, setData] = useState("Please scan sth :3");
   const [_error, setError] = useState("");
   const [showVerifiedDialog, setShowVerifiedDialog] = useState(false);
@@ -153,19 +154,23 @@ function AuthCodeScanner({
             data.ethAddress = ethAddress;
 
             console.log(data);
-            let resp = await fetch("http://hercher.eu:8080/api/verify", {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-            // console.log(await resp.b());
-            if (resp.status == 200) {
-              setShowVerifiedDialog(true);
-            } else {
-              setShowDeniedDialog(true);
+            try {
+              let resp = await fetch("http://hercher.eu:8080/api/verify", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+              if (resp.status == 200) {
+                setShowVerifiedDialog(true);
+              } else {
+                setShowDeniedDialog(true);
+              }
+            } catch (e) {
+              alert("an error occured");
             }
+            // console.log(await resp.b());
           }}
           onError={(error: any) => setError(error?.message)}
           styles={{

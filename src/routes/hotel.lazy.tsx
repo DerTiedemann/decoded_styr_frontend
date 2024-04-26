@@ -43,8 +43,12 @@ function CodeCard({ code, data }: CodeCardProps) {
           {code.toUpperCase()}
         </h1>
         <h3 className="mt-10">or let them scan the code</h3>
-        <div className="mt-5">
-          <QRCode className="" level="H" value={data.toString()}></QRCode>
+        <div className="m-5 bg-white">
+          <QRCode
+            className="m-5 bg-white"
+            level="H"
+            value={data.toString()}
+          ></QRCode>
         </div>
       </div>
     </Card>
