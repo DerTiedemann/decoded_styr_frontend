@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import {
   Dialog,
@@ -61,17 +61,6 @@ function ScannerContainer() {
                         keccak_256(pubKey.slice(1)).slice(-20)
                       );
                     setEthAddress(ethAddress);
-            // let data = { code: "KKYIGX", session: "4efecbbb-7790-5d4f-9c2f-8cce8997a817", key: hexPubkey, walletAddress: ethAddress}
-                    
-            // let resp = await fetch("http://hercher.eu:8080/api/verify", {
-            //   method: "POST",
-            //   body: JSON.stringify(data),
-            //   headers: {
-            //     "Content-Type": "application/json",
-            //   },
-            //       })
-
-
                   } else {
                     alert("Invalid Private Key");
                   }
@@ -102,10 +91,38 @@ interface AuthCodeScannerProps {
 }
 
 function AuthCodeScanner({ pubkey, ethAddress }: AuthCodeScannerProps) {
-  const [_data, setData] = useState("Please scan sth :3");
+  const [data, setData] = useState<string | undefined>(undefined);
   const [_error, setError] = useState("");
   const [showVerifiedDialog, setShowVerifiedDialog] = useState(false);
   const [showDeniedDialog, setShowDeniedDialog] = useState(false);
+  const [blocked, setBlocked] = useState(false);
+
+  useEffect(() => {
+    if (data && !showDeniedDialog && !showVerifiedDialog && !blocked) {
+      setBlocked(true);
+      let local = JSON.parse(data);
+      local.key = pubkey;
+      local.walletAddress = ethAddress;
+
+      let payload = JSON.stringify(local);
+
+      const mint = async () => {
+        const resp = await fetch("https://api.styr.network/api/verify", {
+          method: "POST",
+          body: payload,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (resp.status == 200) {
+          setShowVerifiedDialog(true);
+        } else {
+          setShowDeniedDialog(true);
+        }
+      };
+      mint();
+    }
+  }, [data]);
 
   return (
     <>
@@ -154,35 +171,7 @@ function AuthCodeScanner({ pubkey, ethAddress }: AuthCodeScannerProps) {
           components={{
             torch: false,
           }}
-          onResult={async (text, _result) => {
-            console.log(text, showDeniedDialog, showVerifiedDialog);
-            if (showVerifiedDialog || showDeniedDialog) {
-              return;
-            }
-            setData(text);
-            let data = JSON.parse(text);
-            data.key = pubkey;
-            data.ethAddress = ethAddress;
-
-            console.log(data);
-            try {
-              let resp = await fetch("http://hercher.eu:8080/api/verify", {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-              if (resp.status == 200) {
-                setShowVerifiedDialog(true);
-              } else {
-                setShowDeniedDialog(true);
-              }
-            } catch (e) {
-              alert("an error occured");
-            }
-            // console.log(await resp.b());
-          }}
+          onResult={(text, _) => setData(text)}
           onError={(error: any) => setError(error?.message)}
           styles={{
             container: {
@@ -191,9 +180,7 @@ function AuthCodeScanner({ pubkey, ethAddress }: AuthCodeScannerProps) {
             },
           }}
         />
-      ) : (
-        <></>
-      )}
+      ) : null}
     </>
   );
 }

@@ -9,7 +9,7 @@ export const Route = createLazyFileRoute("/hotel")({
 });
 
 function Index() {
-  const { lastMessage } = useWebSocket("ws://hercher.eu:8080/ws");
+  const { lastMessage } = useWebSocket("wss://api.styr.network/ws");
 
   const [code, setCode] = useState<string>("");
   const [data, setData] = useState<string | undefined>(undefined);
@@ -18,7 +18,7 @@ function Index() {
       let data = JSON.parse(lastMessage.data);
       setData(lastMessage.data);
       setCode(data.code);
-      console.log(data)
+      console.log(data);
     }
   }, [lastMessage]);
   if (code === "") {
