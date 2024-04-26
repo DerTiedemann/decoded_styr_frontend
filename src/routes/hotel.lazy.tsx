@@ -18,6 +18,7 @@ function Index() {
       let data = JSON.parse(lastMessage.data);
       setData(lastMessage.data);
       setCode(data.code);
+      console.log(data)
     }
   }, [lastMessage]);
   if (code === "") {
